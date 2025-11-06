@@ -1,0 +1,90 @@
+/* Contenedor general */
+.listado-wrapper {
+  background: #89adec;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+/* Encabezado */
+.listado-title {
+  font-size: 2rem;
+  font-weight: arial;
+  color: #ffffff;
+ 
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+/* Barra de búsqueda */
+.search-input {
+  max-width: 450px;
+  margin: 0 auto 25px;
+}
+
+/* Cards */
+.card {
+  border: 3px solid #000;
+  border-radius: 12px;
+  transition: transform 0.2s ease-in-out;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+}
+
+/* Avatar */
+.card img {
+  width: 90px;
+  height: 90px;
+  border: 3px solid #000;
+}
+
+/* Nombre del participante */
+.card h5 {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+/* Botón del gafete */
+.btn-gafete {
+  background: #005bb8;
+  color: #fff;
+  border-radius: 6px;
+  width: 100%;
+  margin-top: 10px;
+  padding: 10px 0;
+  font-size: 1rem;
+  text-decoration: none;
+  box-shadow: 0px 3px 0px #003f82;
+  transition: 0.2s;
+}
+
+.btn-agregar {
+  background: #36aa0f;
+  color: #fff;
+  display: block;
+  text-align: center;
+  width: 100%;
+  padding: 14px;
+  font-size: 1.2rem;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: bold;
+  box-shadow: 0px 3px 0px #3bc752;
+  transition: 0.2s ease-in-out;
+}
+
+.btn-agregar:hover {
+  background: hsl(136, 71%, 23%);
+  transform: translateY(-2px);
+}
+
+
+
+
+/* Grilla de cards */
+.cards-container {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+}

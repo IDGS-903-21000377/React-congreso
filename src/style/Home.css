@@ -1,0 +1,75 @@
+/* ==== HOME PAGE ==== */
+
+.home-wrapper {
+  background: linear-gradient(135deg, #6fa0df, #c5dfff);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.home-content {
+  background: #ffffff;
+  text-align: center;
+  width: 100%;
+  max-width: 450px;
+  border-radius: 20px;
+  padding: 40px 30px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  animation: fadeIn 0.5s ease-out;
+  border: none;
+}
+
+.logos-container {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  flex-wrap: wrap;
+  margin-bottom: 25px;
+}
+
+.logo {
+  height: 80px;
+  object-fit: contain;
+  filter: drop-shadow(0 1px 3px rgba(0,0,0,0.1));
+}
+
+/* Textos */
+.subtitle {
+  font-size: 1.3rem;
+  font-weight: 400;
+  color: #444;
+}
+
+.title {
+  font-size: 1.9rem;
+  font-weight: 800;
+  margin-top: 5px;
+  margin-bottom: 30px;
+  color: #002e6e;
+}
+
+/* Botón */
+.btn-enter {
+  display: inline-block;
+  background: #0066ff;
+  color: white;
+  font-size: 1.25rem;
+  padding: 12px 45px;
+  border-radius: 10px;
+  text-decoration: none;
+  box-shadow: 0px 4px 15px rgba(0, 102, 255, 0.3);
+  transition: 0.25s ease-in-out;
+}
+
+.btn-enter:hover {
+  background: #004dcc;
+  transform: translateY(-3px);
+}
+
+/* Animación */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
