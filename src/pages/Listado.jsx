@@ -13,7 +13,7 @@ const Participantes = () => {
   const obtenerParticipantes = async (texto = "") => {
     try {
       const res = await fetch(
-        `http://localhost:8090/api/listado${texto ? `?q=${texto}` : ""}`
+        `https://api-restjs.onrender.com/api/listado${texto ? `?q=${texto}` : ""}`
       );
       const data = await res.json();
 

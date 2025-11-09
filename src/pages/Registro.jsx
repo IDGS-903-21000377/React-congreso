@@ -53,7 +53,7 @@ const handleSubmit = async (e) => {
   };
 
   try {
-    const res = await fetch("http://localhost:8090/api/registro", {
+    const res = await fetch("https://api-restjs.onrender.com/api/registro", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),

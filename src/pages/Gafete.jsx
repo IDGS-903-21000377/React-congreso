@@ -17,7 +17,7 @@ export default function Gafete() {
   const [error, setError] = useState(false);
 
   useEffect(() => {
-    fetch(`http://localhost:8090/api/participante/${id}`)
+    fetch(`https://api-restjs.onrender.com/api/participante/${id}`)
       .then(res => {
         if (!res.ok) throw new Error("No encontrado");
         return res.json();
