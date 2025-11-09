@@ -1,7 +1,7 @@
 
 // src/services/participantesService.js
 
-const API_URL = "http://localhost:5151/api/listado";
+const API_URL = "http://localhost:8090/api/listado";
 
 export async function getParticipantes(search = "") {
   const url = search

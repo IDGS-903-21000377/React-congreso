@@ -13,10 +13,22 @@ const Participantes = () => {
   const obtenerParticipantes = async (texto = "") => {
     try {
       const res = await fetch(
-        `http://localhost:5151/api/listado${texto ? `?q=${texto}` : ""}`
+        `http://localhost:8090/api/listado${texto ? `?q=${texto}` : ""}`
       );
       const data = await res.json();
-      setParticipantes(data);
+
+      // Mapear campos a camelCase para React
+      const participantesFormateados = data.map((p) => ({
+        id: p.Id ?? p.id,
+        nombre: p.Nombre ?? p.nombre,
+        apellidos: p.Apellidos ?? p.apellidos,
+        email: p.Email ?? p.email,
+        ocupacion: p.Ocupacion ?? p.ocupacion,
+        avatarUrl: p.AvatarUrl ?? p.avatarUrl,
+        twitter: p.Twitter ?? p.twitter,
+      }));
+
+      setParticipantes(participantesFormateados);
     } catch (err) {
       console.log("Error al obtener participantes", err);
     }

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Sidebar from "../pages/Sidebar";
-import "../style/registro.css"; // Estilos específicos de registro
+import "../style/registro.css";
 
 const AVATARS = [
   { id: "avatar1", url: "../../media/user1.png" },
@@ -31,33 +31,52 @@ const Registro = () => {
       [name]: type === "checkbox" ? checked : value,
     });
   };
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!formData.aceptar) {
-      alert("Debes aceptar los términos y condiciones");
-      return;
-    }
+  if (!formData.nombre || !formData.apellidos || !formData.email || !formData.ocupacion) {
+    alert("Debes completar todos los campos obligatorios");
+    return;
+  }
+  if (!formData.aceptar) {
+    alert("Debes aceptar los términos y condiciones");
+    return;
+  }
 
-    try {
-      const res = await fetch("http://localhost:5151/api/registro", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
-      if (!res.ok) throw new Error("Error al registrar participante");
-
-      alert("Participante registrado con éxito");
-      navigate("/listado");
-    } catch (err) {
-      console.error(err);
-      alert("Hubo un problema al registrar el participante");
-    }
+  const payload = {
+    nombre: formData.nombre.trim(),
+    apellidos: formData.apellidos.trim(),
+    email: formData.email.trim(),
+    twitter: formData.twitter.trim() || "",
+    ocupacion: formData.ocupacion.trim(),
+    avatarUrl: formData.avatarUrl,
   };
+
+  try {
+    const res = await fetch("http://localhost:8090/api/registro", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+
+    const data = await res.json(); // <--- parseamos el JSON
+
+    if (!res.ok) {
+      console.error("Error del backend:", data);
+      throw new Error(data.error || "Error al registrar participante");
+    }
+
+    alert("Participante registrado con éxito");
+    navigate("/listado");
+  } catch (err) {
+    console.error("Fetch error:", err);
+    alert("Hubo un problema al registrar el participante: " + err.message);
+  }
+};
+
 
   return (
     <>
-      {/* Botón hamburguesa */}
       <button
         className="btn btn-dark"
         style={{ position: "fixed", top: 10, right: 10, zIndex: 1100 }}
@@ -66,51 +85,26 @@ const Registro = () => {
         ☰
       </button>
 
-      {/* Sidebar */}
       <Sidebar isOpen={isOpen} toggleMenu={toggleMenu} />
 
-      {/* Contenedor principal */}
       <div className="registro-wrapper">
         <div className="registro-content">
           <h3 className="title">Registro de Participante</h3>
 
           <form onSubmit={handleSubmit}>
-            {/* Campos de texto */}
-            <div className="mb-3">
-              <label className="form-label">Nombre:</label>
-              <input
-                type="text"
-                name="nombre"
-                value={formData.nombre}
-                onChange={handleChange}
-                className="form-control"
-                required
-              />
-            </div>
-
-            <div className="mb-3">
-              <label className="form-label">Apellidos:</label>
-              <input
-                type="text"
-                name="apellidos"
-                value={formData.apellidos}
-                onChange={handleChange}
-                className="form-control"
-                required
-              />
-            </div>
-
-            <div className="mb-3">
-              <label className="form-label">Email:</label>
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                className="form-control"
-                required
-              />
-            </div>
+            {["nombre", "apellidos", "email", "ocupacion"].map((field) => (
+              <div className="mb-3" key={field}>
+                <label className="form-label">{field.charAt(0).toUpperCase() + field.slice(1)}:</label>
+                <input
+                  type={field === "email" ? "email" : "text"}
+                  name={field}
+                  value={formData[field]}
+                  onChange={handleChange}
+                  className="form-control"
+                  required
+                />
+              </div>
+            ))}
 
             <div className="mb-3">
               <label className="form-label">Twitter:</label>
@@ -124,18 +118,6 @@ const Registro = () => {
               />
             </div>
 
-            <div className="mb-3">
-              <label className="form-label">Ocupación:</label>
-              <input
-                type="text"
-                name="ocupacion"
-                value={formData.ocupacion}
-                onChange={handleChange}
-                className="form-control"
-              />
-            </div>
-
-            {/* Selección de avatar */}
             <div className="mb-4">
               <label className="d-block mb-3">Seleccionar Avatar:</label>
               <div className="avatar-selection">
@@ -147,14 +129,10 @@ const Registro = () => {
                       width="60"
                       height="60"
                       style={{
-                        border:
-                          formData.avatarUrl === avatar.url
-                            ? "3px solid green"
-                            : "2px solid #ccc",
+                        border: formData.avatarUrl === avatar.url ? "3px solid green" : "2px solid #ccc",
+                        cursor: "pointer",
                       }}
-                      onClick={() =>
-                        setFormData({ ...formData, avatarUrl: avatar.url })
-                      }
+                      onClick={() => setFormData({ ...formData, avatarUrl: avatar.url })}
                     />
                     <br />
                     <input
@@ -171,7 +149,6 @@ const Registro = () => {
               </div>
             </div>
 
-            {/* Checkbox */}
             <div className="form-check mb-3">
               <input
                 type="checkbox"
@@ -181,15 +158,10 @@ const Registro = () => {
                 className="form-check-input"
                 required
               />
-              <label className="form-check-label">
-                Leí y acepto los términos y condiciones
-              </label>
+              <label className="form-check-label">Leí y acepto los términos y condiciones</label>
             </div>
 
-            {/* Botón enviar */}
-            <button type="submit" className="btn btn-success w-100 btn-lg">
-              Guardar
-            </button>
+            <button type="submit" className="btn btn-success w-100 btn-lg">Guardar</button>
           </form>
         </div>
       </div>
