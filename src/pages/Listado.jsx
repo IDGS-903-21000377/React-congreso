@@ -17,20 +17,34 @@ const Participantes = () => {
       );
       const data = await res.json();
 
-      // Mapear campos a camelCase para React
-      const participantesFormateados = data.map((p) => ({
-        id: p.Id ?? p.id,
-        nombre: p.Nombre ?? p.nombre,
-        apellidos: p.Apellidos ?? p.apellidos,
-        email: p.Email ?? p.email,
-        ocupacion: p.Ocupacion ?? p.ocupacion,
-        avatarUrl: p.AvatarUrl ?? p.avatarUrl,
-        twitter: p.Twitter ?? p.twitter,
-      }));
+      // Mapear campos a camelCase y construir rutas de avatar correctas.
+      const participantesFormateados = data.map((p) => {
+        const avatarValue = p.AvatarUrl ?? p.avatarUrl;
+        let finalAvatarUrl;
+
+        if (avatarValue && avatarValue.startsWith("http")) {
+          finalAvatarUrl = avatarValue;
+        } else {
+          // Extraer solo el nombre del archivo de rutas como '../../media/user1.png'
+          const avatarFileName = avatarValue ? avatarValue.split("/").pop() : "user1.png";
+          finalAvatarUrl = `/media/${avatarFileName}`;
+        }
+
+        return {
+          ...p, // Copiamos todas las propiedades por si vienen en camelCase
+          id: p.Id ?? p.id,
+          nombre: p.Nombre ?? p.nombre,
+          apellidos: p.Apellidos ?? p.apellidos,
+          email: p.Email ?? p.email,
+          ocupacion: p.Ocupacion ?? p.ocupacion,
+          twitter: p.Twitter ?? p.twitter,
+          avatarUrl: finalAvatarUrl,
+        };
+      });
 
       setParticipantes(participantesFormateados);
     } catch (err) {
-      console.log("Error al obtener participantes", err);
+      console.error("Error al obtener participantes", err);
     }
   };
 
